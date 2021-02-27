@@ -229,7 +229,7 @@ result = my_nn(random_data.view(batch_size,1, 1,100))
 
 print(result.view(10,10))
 
-for epoch in tqdm(range(75)):
+for epoch in tqdm(range(15000)):
     result = my_nn(random_data.view(batch_size,1,1, 100))
 
     start_loss, gap_loss, cluster_size_loss = criterion(result_given=result.view(batch_size,1,10,10), points_given=points)

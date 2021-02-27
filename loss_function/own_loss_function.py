@@ -318,7 +318,7 @@ my_nn.eval()
 opt = optim.SGD(params=my_nn.parameters(), lr=0.1)
 result = my_nn(weightmatrix.view(batch_size,1, 1,100))
 
-for epoch in tqdm(range(15)):
+for epoch in tqdm(range(15000)):
     result = my_nn(weightmatrix.view(batch_size,1,1, 100))
     loss = criterion(result_given=result.view(batch_size,1,10,10), points_given=points)
     print("loss" , loss)
