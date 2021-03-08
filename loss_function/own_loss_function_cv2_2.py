@@ -6,6 +6,8 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
+#In this code, the loss of each part of the loss function was summed up
+
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
@@ -122,7 +124,7 @@ class CustomLoss(nn.Module):
 
 
 def get_data():
-        f = open("D:\\Studium\\Bachelorarbeit\\Unity Projekte\\A-Stern Test\\A-Stern Test\\Assets\\Resources\\single_example_data.txt", "r")
+        f = open("D:\\Studium\\Bachelorarbeit\\Unity Projekte\\Unity-Projekte\\Generate Data\\Assets\\Resources\\200_training_data.txt", "r") #Insert the path to the data here
         # Using readlines()
         Lines = f.readlines()
 

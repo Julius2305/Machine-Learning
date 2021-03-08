@@ -42,7 +42,7 @@ class Net(nn.Module):
 
 
 def get_data():
-        f = open("D:\\Studium\\Bachelorarbeit\\Unity Projekte\\A-Stern Test\\A-Stern Test\\Assets\\Resources\\training_data.txt", "r")
+        f = open("D:\\Studium\\Bachelorarbeit\\Unity Projekte\\Unity-Projekte\\Generate Data\\Assets\\Resources\\200_training_data.txt", "r") #Insert the path to the data here
         # Using readlines()
         Lines = f.readlines()
 

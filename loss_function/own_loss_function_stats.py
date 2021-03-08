@@ -128,7 +128,7 @@ class CustomLoss(nn.Module):
 
 
 def get_data():
-        f = open("D:\\Studium\\Bachelorarbeit\\Unity Projekte\\A-Stern Test\\A-Stern Test\\Assets\\Resources\\single_example_data2.txt", "r")
+        f = open("D:\\Studium\\Bachelorarbeit\\Unity Projekte\\Unity-Projekte\\Generate Data\\Assets\\Resources\\single_example_data2.txt", "r")
         # Using readlines()
         Lines = f.readlines()
 
@@ -195,6 +195,10 @@ weightmatrix, points, target_data, batch_size = get_data()
 weightmatrix = torch.tensor(weightmatrix, dtype=torch.float32)
 weightmatrix = weightmatrix.view(batch_size, 1,10,10)
 
+#mark start and end in the weightmatrix
+for i in range(0, batch_size):
+    weightmatrix[i, 0, points[i][0][0], points[i][0][1]] += 1000
+    weightmatrix[i, 0, points[i][1][0], points[i][1][1]] += 1000
 
 
 random_data = autograd.Variable(torch.rand(1, 1, 10, 10),requires_grad = True)

@@ -6,6 +6,8 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
+#In this code, the loss of each part of the loss function was summed up. The loss function can work with a variable batch size.
+
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
@@ -131,7 +133,7 @@ class CustomLoss(nn.Module):
 
 
 def get_data():
-        f = open("D:\\Studium\\Bachelorarbeit\\Unity Projekte\\A-Stern Test\\A-Stern Test\\Assets\\Resources\\200_training_data.txt", "r")
+        f = open("D:\\Studium\\Bachelorarbeit\\Unity Projekte\\Unity-Projekte\\Generate Data\\Assets\\Resources\\200_training_data.txt", "r") #Insert the path to the data here
         # Using readlines()
         Lines = f.readlines()
 
@@ -197,6 +199,11 @@ def get_data():
 weightmatrix, points, target_data, batch_size = get_data()
 weightmatrix = torch.tensor(weightmatrix, dtype=torch.float32)
 weightmatrix = weightmatrix.view(batch_size, 1,10,10)
+
+#mark start and end in the weightmatrix
+for i in range(0, batch_size):
+    weightmatrix[i, 0, points[i][0][0], points[i][0][1]] += 1000
+    weightmatrix[i, 0, points[i][1][0], points[i][1][1]] += 1000
 
 
 

@@ -6,23 +6,11 @@ from tqdm import tqdm
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
-        self.conv1 = nn.Conv2d(1, 32, 3)
-        self.conv2 = nn.Conv2d(32, 64, 3)
-        self.fc1 = nn.Linear(576, 128)
+        self.fc1 = nn.Linear(100, 128)
         self.fc2 = nn.Linear(128, 100)
 
     # x represents our data
     def forward(self, x):
-        # Pass data through conv1
-        x = self.conv1(x)
-        # Use the rectified-linear activation function over x
-        x = F.relu(x)
-
-        x = self.conv2(x)
-        x = F.relu(x)
-
-        # Run max pooling over x
-        x = F.max_pool2d(x, 2)
         # Flatten x with start_dim=1
         x = x.view(-1, self.num_flat_features(x))
         # Pass data through fc1
@@ -43,12 +31,12 @@ class Net(nn.Module):
 
 
 def get_data():
-        f = open("D:\\Studium\\Bachelorarbeit\\Unity Projekte\\A-Stern Test\\A-Stern Test\\Assets\\Resources\\data.txt", "r")
+        f = open("D:\\Studium\\Bachelorarbeit\\Unity Projekte\\Unity-Projekte\\Generate Data\\Assets\\Resources\\200_training_data.txt", "r") #Insert the path to the data here
         # Using readlines()
         Lines = f.readlines()
 
         weightmatrix = []
-        points = []
+        points_return = []
         target_data_return = []
 
         count = 0
@@ -64,14 +52,25 @@ def get_data():
             weightmatrix.append(x)
 
             #get the start and endpoints
+            points = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+
             y = elements[1].split(" ")
             for i in range(0, len(y), 1):
                 y[i] = y[i].strip('[]')
                 y[i] = y[i].split(",")
                 for j in range(0, len(y[i]), 1):
                     y[i][j] = int(y[i][j])
-
-            points.append(torch.tensor(y))
+                points[y[i][0]][y[i][1]] = 1000
+            points_return.append(points)
 
             #get the path and transform it into a matrix
             z = elements[2].split(", ")
@@ -101,20 +100,24 @@ def get_data():
             count += 1
         f.close()
 
-        return weightmatrix, points, target_data_return, count
+        return weightmatrix, points_return, target_data_return, count
 
 
 weightmatrix, points, target_data, batch_size = get_data()
 weightmatrix = torch.tensor(weightmatrix)
-weightmatrix = weightmatrix.view(batch_size, 1,10,10)
+weightmatrix = weightmatrix.view(batch_size, 1, 1, 100)
+
+#mark start and endpoint in the weightmatrix
+points = torch.tensor(points, dtype=torch.float32)
+points = points.view(batch_size, 1,10,10)
+weightmatrix = weightmatrix + points.view(batch_size, 1, 1, 100)
 
 learning_rate = 0.1
 
 
 
-
-target_data = torch.tensor(target_data)
-target_data = target_data.view(batch_size, 1,10,10)
+target_data = torch.tensor(target_data, dtype=torch.float32)
+target_data = target_data.view(batch_size, 1, 1, 100)
 
 
 my_nn = Net()
